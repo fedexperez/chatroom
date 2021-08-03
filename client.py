@@ -1,6 +1,5 @@
 import socket  # To manage sockets
 import select  # To manage many connections on any system
-import msvcrt
 import errno
 import sys
 
@@ -31,20 +30,15 @@ client_socket.send(username_header + username)
 
 while True:
 
-    key = msvcrt.getch().lower()
+    message = input('{} > '.format(my_username))
 
-    # Press 'w' key to enter a message
-    if key == b'w':
-        # Beacuse of this input the messages doesnt appear immediately
-        message = input('{} > '.format(my_username))
+    # Checks message is not empty
+    if len(message) != 0:
 
-        # Checks message is not empty
-        if len(message) != 0:
-
-            # Encode message to bytes, prepare header and convert to bytes, like for username above, then send
-            message = message.encode('utf-8')
-            message_header = f"{len(message):<{HEADER_LENGTH}}".encode('utf-8')
-            client_socket.send(message_header + message)
+         # Encode message to bytes, prepare header and convert to bytes, like for username above, then send
+        message = message.encode('utf-8')
+        message_header = f"{len(message):<{HEADER_LENGTH}}".encode('utf-8')
+        client_socket.send(message_header + message)
 
     try:
         # Get and print received messages
